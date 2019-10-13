@@ -10,6 +10,7 @@ import { IfnotDirective } from './directives/ifnot.directive';
 import { MultByPipe } from './pipes/mult-by.pipe';
 import { ExMarksPipe } from './pipes/ex-marks.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { FilterPipe } from './pipes/filter.pipe';
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

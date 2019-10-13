@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
+import {Todo, TodosService} from './todos.service';
 
 export interface Post {
   title: string;
@@ -23,6 +24,12 @@ export class AppComponent implements OnInit {
     { title: 'Next block post', text: 'Text text text again text', id: 2 },
   ];
 
+  todos: Todo[] = [];
+
+  todoTitle = '';
+
+  loading = false;
+
   promise: Promise<string> = new Promise<string>(resolve => {
     setTimeout(() => {
       resolve('Promise resolve');
@@ -35,7 +42,10 @@ export class AppComponent implements OnInit {
     }, 1000);
   });
 
+  constructor(private todoService: TodosService) {}
+
   ngOnInit(): void {
+    this.fetchTodos();
   }
 
   updatePosts(post: Post) {
@@ -44,5 +54,44 @@ export class AppComponent implements OnInit {
 
   removePost(id: number) {
     this.posts = this.posts.filter(p => p.id !== id);
+  }
+
+  addTodo() {
+    if (!this.todoTitle.trim()) {
+      return;
+    }
+    const newTodo: Todo = {
+      title: this.todoTitle,
+      completed: false
+    };
+
+    this.todoService.addTodo(newTodo)
+      .subscribe(todo => {
+        this.todos.push(todo);
+        this.todoTitle = '';
+      });
+  }
+
+  fetchTodos() {
+    this.loading = true;
+    this.todoService.fetchTodos()
+      .subscribe(todos => {
+        this.todos = todos;
+        this.loading = false;
+      });
+  }
+
+  removeTodo(id: number) {
+    this.todoService.removeTodo(id)
+      .subscribe(() => {
+        this.todos = this.todos.filter(todo => todo.id !== id);
+      });
+  }
+
+  competedTodo(id: number) {
+    this.todoService.completedTodo(id)
+      .subscribe(todo => {
+        this.todos.find(t => t.id === todo.id).completed = true;
+      });
   }
 }
