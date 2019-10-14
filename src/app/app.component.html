@@ -38,7 +38,9 @@
     <button class="btn" (click)="fetchTodos()">Загрузить</button>
   </div>
   <hr>
-  <div *ngIf="!loading; else loadingBlock">
+  <p *ngIf="error; else todosBlock" class="error">{{ error }}</p>
+  <ng-template #todosBlock>
+    <div *ngIf="!loading; else loadingBlock">
     <div *ngIf="todos.length else notTodo">
       <div class="card" *ngFor="let todo of todos">
         <p>
@@ -54,7 +56,8 @@
       <p>Записей нет</p>
     </ng-template>
   </div>
-  <ng-template #loadingBlock>
-    <p>Loading ...</p>
+    <ng-template #loadingBlock>
+      <p>Loading ...</p>
+    </ng-template>
   </ng-template>
 </div>

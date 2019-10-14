@@ -16,7 +16,6 @@ export interface Post {
 export class AppComponent implements OnInit {
 
   search = '';
-
   searchField = 'title';
 
   posts: Post[] = [
@@ -25,10 +24,9 @@ export class AppComponent implements OnInit {
   ];
 
   todos: Todo[] = [];
-
   todoTitle = '';
-
   loading = false;
+  error = '';
 
   promise: Promise<string> = new Promise<string>(resolve => {
     setTimeout(() => {
@@ -78,6 +76,8 @@ export class AppComponent implements OnInit {
       .subscribe(todos => {
         this.todos = todos;
         this.loading = false;
+      }, error => {
+        this.error = error.message;
       });
   }
 
