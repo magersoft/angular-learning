@@ -3,8 +3,6 @@ import {NgModule, Provider} from '@angular/core';
 
 import { AppComponent } from './app.component';
 import {HomeComponent} from './views/home/home.component';
-import {AboutComponent} from './views/about/about.component';
-import {AboutExtraComponent} from './views/about-extra/about-extra.component';
 import {PostComponent} from './views/post/post.component';
 import {PostsComponent} from './views/posts/posts.component';
 
@@ -29,8 +27,6 @@ const INTERCEPTOR_PROVIDER: Provider = {
   declarations: [
     AppComponent,
     HomeComponent,
-    AboutComponent,
-    AboutExtraComponent,
     PostComponent,
     PostsComponent,
     StyleDirective,
