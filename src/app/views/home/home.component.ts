@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
 import {Todo, TodosService} from './todos.service';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
+import {ModalComponent} from '../../modal/modal.component';
+import {RefDirective} from '../../directives/ref.directive';
+import {Meta, Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -9,6 +12,8 @@ import {Router} from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+
+  @ViewChild(RefDirective, { static: false }) refDir: RefDirective;
 
   search = '';
   searchField = 'title';
@@ -30,7 +35,19 @@ export class HomeComponent implements OnInit {
     }, 1000);
   });
 
-  constructor(private todoService: TodosService, private router: Router) {}
+  constructor(
+    private todoService: TodosService,
+    private router: Router,
+    private resolver: ComponentFactoryResolver,
+    private title: Title,
+    private meta: Meta
+  ) {
+    title.setTitle('Home Page | Angular');
+    meta.addTags([
+      { name: 'keywords', content: 'angular, google' },
+      { name: 'description', content: 'this is angular' }
+    ]);
+  }
 
   ngOnInit(): void {
     this.fetchTodos();
@@ -79,5 +96,16 @@ export class HomeComponent implements OnInit {
 
   goToPostsPage() {
     this.router.navigate(['/posts']);
+  }
+
+  showModal() {
+    const modalFactory = this.resolver.resolveComponentFactory(ModalComponent);
+    this.refDir.containerRef.clear();
+    const component = this.refDir.containerRef.createComponent(modalFactory);
+
+    component.instance.title = 'Dynamic title';
+    component.instance.close.subscribe(() => {
+      this.refDir.containerRef.clear();
+    });
   }
 }

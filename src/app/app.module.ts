@@ -16,6 +16,10 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppInterceptor } from './app.interceptor';
 import {RoutingModule} from './routing.module';
 import { ErrorPageComponent } from './views/error-page/error-page.component';
+import { ModalComponent } from './modal/modal.component';
+import {RefDirective} from './directives/ref.directive';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -34,15 +38,19 @@ const INTERCEPTOR_PROVIDER: Provider = {
     MultByPipe,
     ExMarksPipe,
     FilterPipe,
-    ErrorPageComponent
+    ErrorPageComponent,
+    ModalComponent,
+    RefDirective
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    RoutingModule
+    RoutingModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [INTERCEPTOR_PROVIDER],
+  entryComponents: [ModalComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
